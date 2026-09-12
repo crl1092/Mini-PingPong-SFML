@@ -18,7 +18,7 @@ int main() {
     ball.setFillColor(sf::Color::White);
     ball.setPosition({400.f,300.f});
 
-    sf::Vector2f ballVelocity({7.f,7.f});
+    sf::Vector2f ballVelocity({10.f,10.f});
 
     sf::RectangleShape raquetePlayer1(sf::Vector2f({20.f,100.f}));
     raquetePlayer1.setFillColor(sf::Color::Blue);
@@ -129,18 +129,18 @@ int main() {
         else if (estadoAtual == GameState::Playing) {
             // Movimentação Player 1
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && raquetePlayer1.getPosition().y > 0) {
-                raquetePlayer1.move({0.f, -10.f});
+                raquetePlayer1.move({0.f, -20.f});
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && raquetePlayer1.getPosition().y < 500) {
-                raquetePlayer1.move({0.f, 10.f});
+                raquetePlayer1.move({0.f, 20.f});
             }
 
             // Movimentação Player 2
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && raquetePlayer2.getPosition().y > 0) {
-                raquetePlayer2.move({0.f, -10.f});
+                raquetePlayer2.move({0.f, -20.f});
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && raquetePlayer2.getPosition().y < 500) {
-                raquetePlayer2.move({0.f, 10.f});
+                raquetePlayer2.move({0.f, 20.f});
             }
 
             // Física da bola
@@ -152,6 +152,8 @@ int main() {
 
             if (ball.getGlobalBounds().findIntersection(raquetePlayer1.getGlobalBounds()) ||
                 ball.getGlobalBounds().findIntersection(raquetePlayer2.getGlobalBounds())) {
+                ballVelocity.x ++;
+                ballVelocity.y ++;
                 ballVelocity.x = -ballVelocity.x;
             }
 
