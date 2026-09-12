@@ -17,6 +17,11 @@ int main() {
     raquetePlayer1.setFillColor(sf::Color::Blue);
     raquetePlayer1.setPosition({30.f,250.f});
 
+    //raquete player 2
+    sf::RectangleShape raquetePlayer2(sf::Vector2f({20.f,100.f}));
+    raquetePlayer2.setFillColor(sf::Color::Blue);
+    raquetePlayer2.setPosition({750.f,250.f});
+
     while(window.isOpen()) {
 
         // 1. PROCESSAMENTO DE EVENTOS (Apenas inputs e ações do sistema)
@@ -30,10 +35,18 @@ int main() {
 
         // Movimentação da raquete do player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && raquetePlayer1.getPosition().y > 0) {
-            raquetePlayer1.move({0.f, -8.f});
+            raquetePlayer1.move({0.f, -10.f});
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && raquetePlayer1.getPosition().y < 500) {
-            raquetePlayer1.move({0.f, 8.f});
+            raquetePlayer1.move({0.f, 10.f});
+        }
+
+        //movinemtação da raquete do player 2
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && raquetePlayer2.getPosition().y > 0) {
+            raquetePlayer2.move({0.f, -10.f});
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && raquetePlayer2.getPosition().y < 500) {
+            raquetePlayer2.move({0.f, 10.f});
         }
 
         // Movimentar a bola
@@ -50,19 +63,20 @@ int main() {
         }
 
         // Sistema de pontos
-        if (ball.getPosition().x < 0) {
+        if (ball.getPosition().x < 0|| ball.getPosition().x >= 780) {
             ball.setPosition({400.f, 300.f});
             ballVelocity.x = -ballVelocity.x;
         }
 
-        // Rebate na parede direita
-        if (ball.getPosition().x > 780) {
+        // Rebate na raquete do player 2
+        if (ball.getGlobalBounds().findIntersection(raquetePlayer2.getGlobalBounds())) {
             ballVelocity.x = -ballVelocity.x;
         }
 
         // 3. RENDERIZAÇÃO (Limpa, desenha e exibe tudo de uma vez por frame)
         window.clear(sf::Color::Black);
         window.draw(raquetePlayer1);
+        window.draw(raquetePlayer2);
         window.draw(ball);
         window.display();
     }
