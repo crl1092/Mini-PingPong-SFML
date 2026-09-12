@@ -1,3 +1,4 @@
+#include <iostream>
 #include<SFML/Graphics.hpp>
 #include<SFML/Window.hpp>
 int main() {
@@ -21,6 +22,21 @@ int main() {
     sf::RectangleShape raquetePlayer2(sf::Vector2f({20.f,100.f}));
     raquetePlayer2.setFillColor(sf::Color::Blue);
     raquetePlayer2.setPosition({750.f,250.f});
+
+    //pontuação
+    int ptsPlayer1 = 0;
+    int ptsPlayer2 = 0;
+    sf::Font font;
+    //carregar fonte
+    if (!font.openFromFile("assets/fonts/Montserrat-Regular.ttf")) {
+        std::cerr << "Could not load font" << std::endl;
+    }
+    sf::Text text(font);
+    text.setFillColor(sf::Color::White);
+    text.setCharacterSize(30);
+    text.setStyle(sf::Text::Bold);
+    text.setFont(font);
+    text.setPosition({320.f ,0});
 
     while(window.isOpen()) {
 
@@ -63,10 +79,19 @@ int main() {
         }
 
         // Sistema de pontos
-        if (ball.getPosition().x < 0|| ball.getPosition().x >= 780) {
+        //Player1
+        if (ball.getPosition().x < 0) {
             ball.setPosition({400.f, 300.f});
             ballVelocity.x = -ballVelocity.x;
+            ptsPlayer2++;
+        } else if (ball.getPosition().x >= 780) {
+            ball.setPosition({400.f, 300.f});
+            ballVelocity.x = -ballVelocity.x;
+            ptsPlayer1++;
         }
+        //Mostra os pontos
+        text.setString("Pontos: " + std::to_string(ptsPlayer1) + " X " + std::to_string(ptsPlayer2));
+
 
         // Rebate na raquete do player 2
         if (ball.getGlobalBounds().findIntersection(raquetePlayer2.getGlobalBounds())) {
@@ -75,6 +100,7 @@ int main() {
 
         // 3. RENDERIZAÇÃO (Limpa, desenha e exibe tudo de uma vez por frame)
         window.clear(sf::Color::Black);
+        window.draw(text);
         window.draw(raquetePlayer1);
         window.draw(raquetePlayer2);
         window.draw(ball);
